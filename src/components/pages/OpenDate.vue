@@ -127,9 +127,11 @@
                     <i class="far fa-trash-alt"></i>
                   </button>
                 </div>
-                <span class="text-danger" v-if="scheduleRangeModal.timesValidator"
-                    >時間重疊請修改</span
-                  >
+                <span
+                  class="text-danger"
+                  v-if="scheduleRangeModal.timesValidator"
+                  >時間重疊請修改</span
+                >
               </div>
               <div>
                 <button
@@ -168,9 +170,9 @@
                   v-model="scheduleRangeModal.rangeType"
                   name="everyRadio"
                   class="custom-control-input"
-                  value=1
+                  value="1"
                 />
-                <label class="custom-control-label" for="customRadio1" 
+                <label class="custom-control-label" for="customRadio1"
                   >每天</label
                 >
               </div>
@@ -181,7 +183,7 @@
                   v-model="scheduleRangeModal.rangeType"
                   name="everyRadio"
                   class="custom-control-input"
-                  value=2
+                  value="2"
                 />
                 <label class="custom-control-label" for="customRadio2"
                   >每星期</label
@@ -194,14 +196,13 @@
                   v-model="scheduleRangeModal.rangeType"
                   name="everyRadio"
                   class="custom-control-input"
-                  value=3
+                  value="3"
                   disabled
                 />
                 <label class="custom-control-label" for="customRadio3"
                   >每月</label
                 >
               </div>
-
 
               <div v-show="scheduleRangeModal.rangeType == 2">
                 <input
@@ -266,7 +267,11 @@
             >
               取消
             </button>
-            <button type="button" class="btn btn-primary" @click="schedules(out?2:1)">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="schedules(out ? 2 : 1)"
+            >
               確定
             </button>
           </div>
@@ -502,14 +507,15 @@ export default {
         rangeType: 1,
         rangeTypeValidator: false,
         rangeNumber: [],
-        schedulesType:[],
+        schedulesType: [],
       },
       scheduleRange: {
         times: [{ startTime: null, endTime: null }],
         startDate: null,
         endDate: null,
+        schedulesType: null,
         rangeType: null,
-        rangeNumber: [],
+        rangeNumber:[],
       },
       times: [{ startTime: null, endTime: null }],
       // dateRange: [],
@@ -605,9 +611,30 @@ export default {
       }
 
       let scheduleRequest = Object.assign({}, vm.scheduleRangeModal);
-      scheduleRequest.schedulesType=schedulesType
+      scheduleRequest.schedulesType = schedulesType;
       console.log("vm.thisDate", scheduleRequest);
-      this.$http.put(api, scheduleRequest).then((response) => {
+      vm.scheduleRange.startDate = scheduleRequest.startDate;
+      vm.scheduleRange.endDate = scheduleRequest.endDate;
+      vm.scheduleRange.rangeType =scheduleRequest.rangeType ;
+      vm.scheduleRange.rangeNumber =scheduleRequest.rangeNumber ;
+      vm.scheduleRange.schedulesType = scheduleRequest.schedulesType;
+      let times = [];
+      scheduleRequest.times.forEach(function (item, index, array) {
+        let time = {
+          startTime: item.startTime,
+          endTime: item.endTime,
+        };
+        times.push(time);
+      });
+         vm.scheduleRange.times=times
+      // for(i=0;i<scheduleRequest.times.length;i++){
+      //   let times= [{ startTime: scheduleRequest.times[i].startTime, endTime: scheduleRequest.times[i].endTime }],
+      // }
+      console.log(
+        " vm.scheduleRange************************",
+        vm.scheduleRange
+      );
+      this.$http.put(api, vm.scheduleRange).then((response) => {
         console.log("products:response", response.data);
         if (response.data.success) {
           $("#scheduleRangeModal").modal("hide");
@@ -659,21 +686,21 @@ export default {
           let scheduleRequest = Object.assign({}, thisDate);
           scheduleRequest.date = thisDate.date.format("YYYY-MM-DD");
           console.log("vm.thisDate", scheduleRequest);
-          scheduleRequest.openTime.forEach(function (item, index,array) {
-              let time = {
+          scheduleRequest.openTime.forEach(function (item, index, array) {
+            let time = {
               startTime: item.startTime,
               endTime: item.endTime,
             };
-            array[index]=time
-      });
-          scheduleRequest.outTime.forEach(function (item, index,array) {
-              let time = {
+            array[index] = time;
+          });
+          scheduleRequest.outTime.forEach(function (item, index, array) {
+            let time = {
               startTime: item.startTime,
               endTime: item.endTime,
             };
-            array[index]=time
-      });
-      console.log("vm.thisDate  change", scheduleRequest);
+            array[index] = time;
+          });
+          console.log("vm.thisDate  change", scheduleRequest);
           this.$http.put(api, scheduleRequest).then((response) => {
             // vm.status.loadingItem = "";
             console.log("products:response", response.data);
