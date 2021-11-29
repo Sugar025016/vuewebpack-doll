@@ -2,26 +2,6 @@
   <div>
     
 
-    <main role="main">
-      <section
-        class="jumbotron text-center"
-        style="
-          background-size: cover;
-          background-position: center;
-          background-image: url('http://localhost:8082/16348130439051457.jpg');
-        "
-        :style="{ backgroundImage: `url(${imageUrl})` }"
-      >
-        <div class="container">
-          <div class="row justify-content-center align-items-center">
-            <div class="col-4">
-              <h1 class="display-4 t-shadow">娃娃世界</h1>
-              <p class="lead">各種可愛的娃娃，在這都可以找的到</p>
-              <p class="lead">台北市信義區XXX路XXX號</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       
 
@@ -183,7 +163,6 @@
       </div>
       </div>
       </div>
-    </main>
 
     
     <div
@@ -410,8 +389,6 @@ export default {
       user: {},
       login: false,
       i: 0,
-      imageUrl: "http://localhost:8082/16348130439051457.jpg",
-      imageUrlCart: "http://localhost:8082/16348130439051458.jpg",
       pagination: {},
       products: [], //接收回傳的資料，必須和回傳資料名稱相同
       isLoading: false,
@@ -432,38 +409,7 @@ export default {
     };
   },
   methods: {
-    getProducts(page = 1) {
-      console.log("getProducts(page = 1) ");
-      //開啟網頁就創建
-      const vm = this;
-      // vm.isLoading = true;
-      const api = `${process.env.APIPATH}/api/products?page=${page}`;
-      this.$http.get(api).then((response) => {
-        vm.isLoading = false;
-        console.log("products:response", response.data);
-        if (response.data.success) {
-          vm.products = response.data.data.content;
-          console.log("products:response.data.products", vm.products);
-          vm.pagination = response.data.data.page;
-        }
-      });
-    },
-    getProduct(id) {
-      //開啟網頁就創建
-      const vm = this;
-      vm.status.loadingItem = id;
-      const api = `${process.env.APIPATH}/api/product/${id}`;
-      this.$http.get(api).then((response) => {
-        vm.status.loadingItem = "";
-        console.log("products:response", response.data);
-        if (response.data.success) {
-          $("#productModal").modal("show");
-          vm.product = response.data.data;
-          vm.product.num=vm.product.num<=1?1:vm.product.num
-          console.log("products:response.data.products", vm.products);
-        }
-      });
-    },
+    
     addtoCart(id, qty = 1,one=false) {
       console.log("addtoCart(id, qty) ");
       //開啟網頁就創建
@@ -498,9 +444,7 @@ export default {
         vm.status.loadingItem = "";
         console.log("cart:response", response.data);
         if (response.data.success && response.data.data.carts.length>0) {
-          if(modal){
-          $("#cartModal").modal("show");
-          }
+          
           vm.cart = response.data.data.carts;
           vm.total = response.data.data.total;
           vm.final_total = response.data.data.final_total;
@@ -520,7 +464,7 @@ export default {
         console.log("cart:response", response.data);
         if (response.data.success) {
           vm.getCart();
-          vm.getUser();
+          vm.$parent.updateItme()
         }
       });
     },
@@ -564,64 +508,7 @@ export default {
         }
       });
     },
-    signout(){
-      const api = `${process.env.APIPATH}/logout`;
-      const vm = this;
-    this.$http.get(api).then((response)=>{
-      console.log('logout:response',response.data)
-      if(response.data.code===0){
-      console.log('//////logout:response/////',response.data)
-      vm.login=false
-      vm.$router.push("/shopBoard/shopProduct");
-
-      }
-    });
-    },
-    loginModal(){
-      const vm = this;
-        
-       $("#loginModal").modal("show");
     
-    },
-    signin() {
-      const api = `${process.env.APIPATH}/login`;
-      const vm = this;
-      //  let formData = JSON.stringify(vm.user);
-       let body = new FormData();
-        body.append('username', vm.user.username);
-        body.append('password',  vm.user.password);
-        body.append('remember-me',  vm.user.rememberMe);
-      this.$http.post(api,body).then((response) => {
-        console.log("signin:response", response);
-        console.log("signin:response.data.success", response.data);
-        if (response.data.code===0) {
-          const token = response.data.token;
-          const expired = response.data.expired;
-          document.cookie = `hexToken = ${token};expires=${new Date(expired)};`;
-          $("#loginModal").modal("hide");
-          this.getUser();
-        }else{
-          console.log("signin:登入錯誤");
-          this.message=response.data.message
-          this.code=response.data.code
-          vm.$bus.$emit("message:push", response.data.code, "danger");
-          vm.$bus.$emit("message:push", response.data.message, "danger");
-        }
-      });
-    },
-
-    toCheckout(){
-      vm.$router.push("/shopBoard/checkout");
-    },
-    
-    toOrderPay(orderId){
-      console.log("toOrderPay(orderId) ",orderId);
-      
-      const vm = this;
-
-      vm.$router.push(`/shopBoard/orderPay/${orderId}`)
-          
-    },
 
     // signin() {
     //   const api = `${process.env.APIPATH}/api/login`;
@@ -651,7 +538,6 @@ export default {
   },
   //開啟網頁就創建
   created() {
-    this.getProducts();
     this.getCart(false);
     this.getUser();
   },

@@ -21,10 +21,18 @@ import ShopBoard from '@/components/ShopBoard'
 import ShopProduct from '@/components/pages/ShopProduct'
 import Checkout from '@/components/pages/Checkout'
 import Join from '@/components/pages/Join'
+import ChangeUser from '@/components/pages/ChangeUser'
 import OrderHistory from '@/components/pages/OrderHistory'
 import OrderPay from '@/components/pages/OrderPay'
 import OrderDetail from '@/components/pages/OrderDetail'
+import Category from '@/components/pages/Category'
+import Category2 from '@/components/pages/Category2'
 
+const originalPush = VueRouter.prototype.push
+//修改原型对象中的push方法
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 Vue.use(VueRouter)
 export default new VueRouter({
@@ -44,12 +52,6 @@ export default new VueRouter({
             name: 'login',
             path: '/login',
             component: Login,
-        },
-        {
-            name: 'openDate',
-            path: '/openDate',
-            component: OpenDate,
-            meta:{requiresAuth:2}
         },
         {
             name: 'participate',
@@ -85,12 +87,12 @@ export default new VueRouter({
         },
         
         {
-            name: 'ShopBoard',
+            name: '商店',
             path: '/shopBoard',
             component: ShopBoard,
             children:[
                 {
-                    name: '商店',
+                    name: '商店產品',
                     path: 'shopProduct',
                     component: ShopProduct,
                 },
@@ -98,6 +100,7 @@ export default new VueRouter({
                     name: '結帳',
                     path: 'checkout',
                     component: Checkout,
+                    meta:{requiresAuth:1},
                 },
                 {
                     name: '加入會員',
@@ -105,24 +108,34 @@ export default new VueRouter({
                     component: Join,
                 },
                 {
+                    name: '更改會員資料',
+                    path: 'changeUser',
+                    component: ChangeUser,
+                    meta:{requiresAuth:1},
+                },
+                {
                     name: '模擬付款',
                     path: 'customer_checkout/:orderId',
                     component: CustomChackout,
+                    meta:{requiresAuth:1},
                 },
                 {
                     name: '歷史訂單',
                     path: 'orderHistory',
                     component: OrderHistory,
+                    meta:{requiresAuth:1},
                 },
                 {
                     name: '訂單付款',
                     path: 'orderPay/:orderId',
                     component: OrderPay,
+                    meta:{requiresAuth:1},
                 },
                 {
                     name: '訂單明細',
                     path: 'orderDetail/:orderId',
                     component: OrderDetail,
+                    meta:{requiresAuth:1},
                 },
                 ]
         },
@@ -131,7 +144,7 @@ export default new VueRouter({
             name: '產品',
             path: '/dashboard',
             component: Dashboard,
-            meta:{requiresAuth:2},
+            // meta:{requiresAuth:2},
             children:[
                 {
                     name: '產品',
@@ -152,6 +165,16 @@ export default new VueRouter({
                     name: 'openDate',
                     path: 'openDate',
                     component: OpenDate,
+                },
+                {
+                    name: '分類',
+                    path: 'category',
+                    component: Category,
+                },
+                {
+                    name: '分類2',
+                    path: 'category2',
+                    component: Category2,
                 },
                 {
                     name: 'addUser',

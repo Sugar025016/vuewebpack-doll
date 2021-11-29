@@ -1,126 +1,105 @@
 <template>
   <div>
-    
-
-    <main role="main">
-      <section
-        class="jumbotron text-center"
-        style="
-          background-size: cover;
-          background-position: center;
-          background-image: url('http://localhost:8082/16348130439051457.jpg');
-        "
-        :style="{ backgroundImage: `url(${imageUrl})` }"
-      >
-        <div class="container">
-          <div class="row justify-content-center align-items-center">
-            <div class="col-4">
-              <h1 class="display-4 t-shadow">娃娃世界</h1>
-              <p class="lead">各種可愛的娃娃，在這都可以找的到</p>
-              <p class="lead">台北市信義區XXX路XXX號</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div class="container">
-        <div class="my-3 p-3 bg-white rounded shadow-sm">
-          <h2 class="border-bottom border-gray pb-2 mb-0">加入我們</h2>
-          <div class="my-5 row justify-content-center">
-            <form class="col-md-8" @submit.prevent="addUser">
-              <div class="form-group">
-                <label for="useremail">Email</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  name="email"
-                  id="useremail"
-                  v-model="user.email"
-                  placeholder="請輸入 Email"
-                  :class="{ 'is-invalid': errors.has('email') }"
-                  v-validate="'required|email'"
-                />
-
-                <span class="text-danger" v-if="errors.has('email')"
-                  >"請輸入正確的mail"</span
+    <div class="container">
+      <div class="my-3 p-3 bg-white rounded shadow-sm">
+        <h2 class="border-bottom border-gray pb-2 mb-0">加入我們</h2>
+        <div class="my-5 row justify-content-center">
+          <form class="col-md-8" @submit.prevent="addUser">
+            <div class="form-group">
+              <label for="useremail">Email</label>
+              <span
+                  v-if="code == 103"
+                  class="alert-danger"
+                  style="font-size: 25px"
+                  >{{ this.message }}</span
                 >
-                <span class="text-danger" v-if="errors.has('email')">{{
-                  errors.first("email")
-                }}</span>
-              </div>
-              <div v-on:click.capture="doConfirmation()">
-                <div class="form-group">
-                  <label for="password">密碼</label>
+              <input
+                type="email"
+                class="form-control"
+                name="email"
+                id="useremail"
+                v-model="user.email"
+                placeholder="請輸入 Email"
+                :class="{ 'is-invalid': errors.has('email') }"
+                v-validate="'required|email'"
+              />
 
-                  <input
-                    type="password"
-                    class="form-control"
-                    name="password"
-                    id="password"
-                    :class="{ 'is-invalid': errors.has('password') }"
-                    v-model="user.password"
-                    v-validate="'required'"
-                    placeholder="請輸入密碼"
-                  />
-                  <span class="text-danger" v-if="errors.has('password')">{{
-                    errors.first("password")
-                  }}</span>
-                </div>
-              </div>
-              <div v-on:click.capture="doConfirmation()">
-                <div class="form-group">
-                  <label for="ConfirmationPassword">密碼確認</label>
-
-                  <input
-                    type="password"
-                    class="form-control"
-                    name="confirmationPassword"
-                    id="confirmationPassword"
-                    :class="{
-                      'is-invalid': errors.has('confirmationPassword'),
-                    }"
-                    v-model="user.confirmationPassword"
-                    v-validate="'required'"
-                    placeholder="請輸入確認密碼"
-                  />
-                  <span
-                    class="text-danger"
-                    v-if="errors.has('confirmationPassword')"
-                    >{{ errors.first("confirmationPassword") }}</span
-                  >
-                  <span class="text-danger" v-if="confirmation"
-                    >兩次密碼輸入不同，請重新確認
-                  </span>
-                </div>
-              </div>
-
+              <span class="text-danger" v-if="errors.has('email')"
+                >"請輸入正確的mail"</span
+              >
+              <span class="text-danger" v-if="errors.has('email')">{{
+                errors.first("email")
+              }}</span>
+            </div>
+            <div v-on:click.capture="doConfirmation()">
               <div class="form-group">
-                <label for="username">暱稱</label>
+                <label for="password">密碼</label>
+
                 <input
-                  type="text"
+                  type="password"
                   class="form-control"
-                  name="name"
-                  id="username"
-                  :class="{ 'is-invalid': errors.has('name') }"
-                  v-model="user.name"
+                  name="password"
+                  id="password"
+                  :class="{ 'is-invalid': errors.has('password') }"
+                  v-model="user.password"
                   v-validate="'required'"
-                  placeholder="請輸入暱稱"
+                  placeholder="請輸入密碼"
                 />
-                <span class="text-danger" v-if="errors.has('name')">{{
-                  errors.first("name")
+                <span class="text-danger" v-if="errors.has('password')">{{
+                  errors.first("password")
                 }}</span>
               </div>
-              <div class="text-right">
-                <button class="btn btn-danger">加入會員</button>
+            </div>
+            <div v-on:click.capture="doConfirmation()">
+              <div class="form-group">
+                <label for="ConfirmationPassword">密碼確認</label>
+
+                <input
+                  type="password"
+                  class="form-control"
+                  name="confirmationPassword"
+                  id="confirmationPassword"
+                  :class="{
+                    'is-invalid': errors.has('confirmationPassword'),
+                  }"
+                  v-model="user.confirmationPassword"
+                  v-validate="'required'"
+                  placeholder="請輸入確認密碼"
+                />
+                <span
+                  class="text-danger"
+                  v-if="errors.has('confirmationPassword')"
+                  >{{ errors.first("confirmationPassword") }}</span
+                >
+                <span class="text-danger" v-if="confirmation"
+                  >兩次密碼輸入不同，請重新確認
+                </span>
               </div>
-            </form>
-          </div>
+            </div>
+
+            <div class="form-group">
+              <label for="username">暱稱</label>
+              <input
+                type="text"
+                class="form-control"
+                name="name"
+                id="username"
+                :class="{ 'is-invalid': errors.has('name') }"
+                v-model="user.name"
+                v-validate="'required'"
+                placeholder="請輸入暱稱"
+              />
+              <span class="text-danger" v-if="errors.has('name')">{{
+                errors.first("name")
+              }}</span>
+            </div>
+            <div class="text-right">
+              <button class="btn btn-danger">加入會員</button>
+            </div>
+          </form>
         </div>
       </div>
-    </main>
-
-    
-    
+    </div>
 
     <div class="modal" tabindex="-1" id="loginModal">
       <div class="modal-dialog">
@@ -140,7 +119,7 @@
             <form class="form-signin" @submit.prevent="signin">
               <h1 class="h3 mb-3 font-weight-normal">請輸入帳號密</h1>
               <span
-                v-show="code === 102"
+                v-show="code === 103"
                 class="alert-danger"
                 style="font-size: 30px"
                 >{{ this.message }}</span
@@ -184,6 +163,9 @@
 <script>
 import $ from "jquery";
 export default {
+  props:{
+    userData:{}
+  },
   data() {
     return {
       response: "",
@@ -198,8 +180,6 @@ export default {
       },
       login: false,
       i: 0,
-      imageUrl: "http://localhost:8082/16348130439051457.jpg",
-      imageUrlCart: "http://localhost:8082/16348130439051458.jpg",
       pagination: {},
       products: [], //接收回傳的資料，必須和回傳資料名稱相同
       isLoading: false,
@@ -213,7 +193,6 @@ export default {
     };
   },
   methods: {
-    
     addUser() {
       console.log("addUser() ");
 
@@ -221,34 +200,47 @@ export default {
       const api = `${process.env.APIPATH}/api/addUser`;
 
       vm.$validator.validate().then((result) => {
-
         if (result) {
-            if(vm.user.password!==vm.user.confirmationPassword){
-                this.confirmation=true
-                return;
-            }
-            
-      console.log("vm.user ",vm.user);
-          this.$http.post(api,  vm.user ).then((response) => {
+          if (vm.user.password !== vm.user.confirmationPassword) {
+            this.confirmation = true;
+            return;
+          }
+
+          console.log("vm.user ", vm.user);
+          this.$http.post(api, vm.user).then((response) => {
             console.log("products:response", response.data);
             if (response.data.success) {
-              vm.response=response.data.message;
-            }else{
-              vm.response=response.data.message;
+              vm.response = response.data.message;
+            } else {
+              vm.response = response.data.message;
+              vm.code=response.data.code
+              console.log("vm.response:",vm.response,"vm.code",vm.code)
+          vm.$bus.$emit("message:push", response.data.code, "danger");
+          vm.$bus.$emit("message:push", response.data.message, "danger");
             }
           });
         }
       });
     },
-    doConfirmation(){
-        this.confirmation=false
-    }
+    doConfirmation() {
+      this.confirmation = false;
+    },
 
+    checkLogin() {
+          console.log("checkLogin()");
+      const vm = this;
 
-
+      if(vm.userData.nickname){
+        console.log("window.alert('你已經登入')");
+          window.alert("你已經登入");
+          vm.$router.push(`/shopBoard/shopProduct`)
+      }
+     
+    },
   },
   //開啟網頁就創建
   created() {
+    this.checkLogin();
   },
 };
 </script>

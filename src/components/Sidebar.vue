@@ -40,11 +40,18 @@
                   設定營業時間
                 </a>
                 </router-link>
-                <router-link to="/dashboard/openDate" class="nav-link">
+                <router-link to="/dashboard/category" class="nav-link">
                 <a class="nav-link" href="#">
                   <span data-feather="file-text"></span>
                   <i class="fas fa-box-open"></i>
                   設定分類
+                </a>
+                </router-link>
+                <router-link to="/dashboard/category2" class="nav-link">
+                <a class="nav-link" href="#">
+                  <span data-feather="file-text"></span>
+                  <i class="fas fa-box-open"></i>
+                  設定分類2
                 </a>
                 </router-link>
                 <router-link to="/dashboard/addUser" class="nav-link">

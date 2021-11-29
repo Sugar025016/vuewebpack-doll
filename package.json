@@ -27,13 +27,15 @@
     "node-sass": "^4.14.1",
     "popper.js": "^1.16.1",
     "sass-loader": "^7.3.1",
+    "save": "^2.4.0",
     "vee-validate": "^2.2.15",
     "vue": "^2.5.2",
     "vue-axios": "^2.1.5",
     "vue-datepicker-local": "^1.0.19",
     "vue-loading-overlay": "^3.4.2",
     "vue-router": "^3.5.2",
-    "vue2-datepicker": "^3.10.1"
+    "vue2-datepicker": "^3.10.1",
+    "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

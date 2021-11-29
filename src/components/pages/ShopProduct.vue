@@ -1,36 +1,6 @@
 <template>
   <div>
-    
-
-    <main role="main">
-      <section
-        class="jumbotron text-center"
-        style="
-          background-size: cover;
-          background-position: center;
-          background-image: url('http://localhost:8082/16348130439051457.jpg');
-        "
-        :style="{ backgroundImage: `url(${imageUrl})` }"
-      >
-        <div class="container">
-          <div class="row justify-content-center align-items-center">
-            <div class="col-4">
-              <h1 class="display-4 t-shadow">娃娃世界</h1>
-              <p class="lead">各種可愛的娃娃，在這都可以找的到</p>
-              <p class="lead">台北市信義區XXX路XXX號</p>
-              <p>
-                <router-link
-                  to="/shopBoard/join"
-                  class="nav-link"
-                  v-if="!login"
-                >
-                  <a href="#" class="btn btn-primary my-2">加入會員</a>
-                </router-link>
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       <div class="album py-5 bg-light">
         <div class="container-fluid">
@@ -166,19 +136,18 @@
                 </ul>
               </nav>
               <div>
-                <!-- <button
+                <button
                   v-if="userData.cartCount > 0"
-                  class="btn btn-lg btn-outline-primary"
+                  class="btn btn-lg btn-outline-info"
                   @click="toCheckout()"
                 >
                   去結帳
-                </button> -->
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </main>
 
     
     <div
@@ -255,16 +224,16 @@
 <script>
 import $ from "jquery";
 export default {
+  props:{
+    userData:{}
+  },
   data() {
     return {
       message: "",
       code: 0,
       user: {},
-      userData: {},
       login: false,
       i: 0,
-      imageUrl: "http://localhost:8082/16348130439051457.jpg",
-      imageUrlCart: "http://localhost:8082/16348130439051458.jpg",
       pagination: {},
       products: [], //接收回傳的資料，必須和回傳資料名稱相同
       isLoading: false,
@@ -272,18 +241,6 @@ export default {
         loadingItem: "",
       },
       product: {},
-      cart: [],
-      total: 0,
-      final_total: 0,
-      form: {
-        user: {
-          name: "",
-          email: "",
-          tel: "",
-          address: "",
-        },
-        message: "",
-      },
     };
   },
   methods: {
@@ -291,7 +248,7 @@ export default {
       console.log("getProducts(page = 1) ");
       //開啟網頁就創建
       const vm = this;
-      // vm.isLoading = true;
+      vm.isLoading = true;
       const api = `${process.env.APIPATH}/api/products?page=${page}`;
       this.$http.get(api).then((response) => {
         vm.isLoading = false;

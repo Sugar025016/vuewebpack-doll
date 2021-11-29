@@ -35,14 +35,14 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 import App from './App'
 import router from './router';
-import './bus';
+import  './bus';
 import CurrencyFilter from './filter/Currency';
 import moment from 'moment';
 
 
 moment.locale('zh-cn')
-Vue.use(VueAxios,axios)
-Vue.use(VeeValidate,{ events: 'input|blur'});//{ events: 'input|blur'}才會在滑鼠移入輸入欄位再移出時觸發驗證功能
+Vue.use(VueAxios, axios)
+Vue.use(VeeValidate, { events: 'input|blur' });//{ events: 'input|blur'}才會在滑鼠移入輸入欄位再移出時觸發驗證功能
 // Vue.use(Antd);
 Vue.use(DatePicker);
 Vue.use(TimePicker);
@@ -53,13 +53,13 @@ Vue.use(Modal);
 Vue.use(Tooltip);
 // Vue.use(Affix);
 Vue.use(ElementUI, { size: 'small', zIndex: 3000 });
-VeeValidate.Validator.localize('zh_TW',zhTw_Validate) //設定語言
-Vue.component('Loading',Loading)
+VeeValidate.Validator.localize('zh_TW', zhTw_Validate) //設定語言
+Vue.component('Loading', Loading)
 // Vue.component('DatePicker',DatePicker)
-Vue.component('VueDatepickerLocal',VueDatepickerLocal)
-Vue.component('ValidationObserver',VeeValidate.ValidationObserver)
-Vue.component('ValidationProvider',VeeValidate.ValidationProvider)
-Vue.filter('currency',CurrencyFilter)
+Vue.component('VueDatepickerLocal', VueDatepickerLocal)
+Vue.component('ValidationObserver', VeeValidate.ValidationObserver)
+Vue.component('ValidationProvider', VeeValidate.ValidationProvider)
+Vue.filter('currency', CurrencyFilter)
 Vue.config.productionTip = false
 axios.defaults.withCredentials = true;
 
@@ -94,24 +94,48 @@ new Vue({
 //     next();
 //   }
 // })
-router.beforeEach((to,from,next)=>{
-  console.log('to',to,'from',from,'next',next)
-  if(to.matched[0].meta.requiresAuth==2){
+
+
+
+router.beforeEach((to, from, next) => {
+  
+  if(to.path==from.path){
+    console.log("to.path==from.path")
+  }
+  console.log('to', to, 'from', from, 'next', next)
+  console.log( 'from', from, 'next', next)
+  if (to.matched[0].meta.requiresAuth != null) {
     console.log("需要登入驗證")
     console.log(to)
-    const api= `${process.env.APIPATH}/admin/check`;
-    axios.post(api).then((response)=>{
-      if(response.data.success){
+    console.log("to.fullPath", to.fullPath)
+    const str = to.fullPath.split("\/")
+    console.log("分割", str)
+
+    const api = `${process.env.APIPATH}/admin/check`;
+    if (to.matched[0].meta.requiresAuth == 1) {
+
+      const api = `${process.env.APIPATH}/${process.env.USER}/check`;
+    }
+
+    axios.post(api).then((response) => {
+      if (response.data.success) {
         console.log("登入驗證ok")
         next();
-        }else{
-          console.log("登入驗證錯誤")
+      } else {
+        console.log("登入驗證錯誤")
+        if (to.matched[0].meta.requiresAuth == 1) {
           next({
-            path:'/shopBoard/shopProduct'
+            path: '/shopBoard/shopProduct'
+          })
+        } else if (to.matched[0].meta.requiresAuth == 2){
+          next({
+            path: '/login'
           })
         }
+
+      }
     })
-  }else{
+  } else {
     console.log("不需要驗證")
     next();
   }
@@ -126,12 +150,12 @@ router.beforeEach((to,from,next)=>{
 //   return Promise.reject(error);
 // });
 
-function  generateRandomString (num) {
-  const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result1= ' ';
+function generateRandomString(num) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result1 = ' ';
   const charactersLength = characters.length;
-  for ( let i = 0; i < num; i++ ) {
-      result1 += characters.charAt(Math.floor(Math.random() * charactersLength));
+  for (let i = 0; i < num; i++) {
+    result1 += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result1;
 }
@@ -154,17 +178,17 @@ let pendingRequests = new Map()
 axios.interceptors.response.use((response) => {
   const code = response.data.code;
 
-  console.log('code',code)
+  console.log('code', code)
   // pendingRequests.delete(requestKey);
 
-  if(code===109){
-    console.log('code===109',code)
+  if (code === 109) {
+    console.log('code===109', code)
     localStorage.removeItem('token');
-            router.replace({
-                path: '/shopBoard/shopProduct'
-                //登录成功后跳入浏览的当前页面
-                // query: {redirect: router.currentRoute.fullPath}
-            })
+    router.replace({
+      path: '/shopBoard/shopProduct'
+      //登录成功后跳入浏览的当前页面
+      // query: {redirect: router.currentRoute.fullPath}
+    })
   }
 
   console.log(code)
@@ -185,13 +209,13 @@ axios.interceptors.response.use((response) => {
 const getMessage = field => `${field}格式不正确`;
 
 const validate = value => {
-    const regex = /^\w+\.*\w+@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
-    return regex.test(value);
+  const regex = /^\w+\.*\w+@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+  return regex.test(value);
 };
 
 const myValidator = {
-    getMessage,
-    validate,
+  getMessage,
+  validate,
 };
 Validator.extend('customizeEmailRule', myValidator);
 
@@ -200,7 +224,7 @@ Validator.extend('customizeEmailRule', myValidator);
 //   validate(value, { password }) {
 //     return value === password;
 //   },
-  
+
 // })
 
 // Validator.extend('password', {

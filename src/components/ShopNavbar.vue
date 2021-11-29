@@ -59,8 +59,9 @@
                   <router-link to="/shopBoard/orderHistory" >
                   <a class="dropdown-item" href="#">購買歷史</a>
                   </router-link>
-                  
-                  <a class="dropdown-item" href="#">變更資料</a>
+                  <router-link to="/shopBoard/changeUser" >
+                  <a class="dropdown-item" href="#">會員資料</a>
+                  </router-link>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="#" @click="signout">登出</a>
                 </div>
@@ -277,11 +278,6 @@ export default {
       userData: {},
       login: false,
       i: 0,
-      imageUrl: "http://localhost:8082/16348130439051457.jpg",
-      imageUrlCart: "http://localhost:8082/16348130439051458.jpg",
-      pagination: {},
-      products: [], //接收回傳的資料，必須和回傳資料名稱相同
-      isLoading: false,
       status: {
         loadingItem: "",
       },
@@ -289,15 +285,6 @@ export default {
       cart: [],
       total: 0,
       final_total: 0,
-      form: {
-        user: {
-          name: "",
-          email: "",
-          tel: "",
-          address: "",
-        },
-        message: "",
-      },
     };
   },
   methods: {
@@ -348,6 +335,7 @@ export default {
           vm.login = true;
           vm.userData = response.data.data;
           console.log("vm.userData", vm.userData);
+          this.$emit('childByValue',vm.userData)
         } else {
           vm.login = false;
         }
@@ -362,7 +350,8 @@ export default {
           console.log("//////logout:response/////", response.data);
           vm.login = false;
           vm.userData = {};
-          this.$router.push(`/shopBoard/shopProduct`);
+          this.$emit('childByValue',vm.userData)
+          vm.$router.push('/shopBoard/shopProduct')
         }
       });
     },
@@ -388,6 +377,7 @@ export default {
           document.cookie = `hexToken = ${token};expires=${new Date(expired)};`;
           $("#loginModal").modal("hide");
           this.getUser();
+          vm.$router.push(`/shopBoard/shopProduct`)
         } else {
           console.log("signin:登入錯誤");
           this.message = response.data.message;
