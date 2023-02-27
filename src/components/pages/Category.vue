@@ -113,14 +113,14 @@
             v-bind="getLeftOption()"
             @end="end"
             class="dragArea"
-            >   
+            >
             <div
               v-for="element in list2"
               :key="element.id"
               :class="{ undraggable: element.flag }"
               class="list-complete-item " style="max-width: 340px;"
             >
-              <productCmmponent :product="element" v-if="!element.flag"></productCmmponent>          
+              <productCmmponent :product="element" v-if="!element.flag"></productCmmponent>
             </div>
           </draggable>
         </div>
@@ -131,12 +131,13 @@
 </template>
 
 <script>
-import ProductCmmponent from "./ProductComponent";
+// import ProductCmmponent from "./ProductComponent";
 import Draggable from "vuedraggable";
 let dom = null;
 export default {
   name: "DndList",
-  components: { Draggable, ProductCmmponent },
+  // components: { Draggable, ProductCmmponent },
+  components: { Draggable },
   watch: {},
   ready: function () {},
   data() {

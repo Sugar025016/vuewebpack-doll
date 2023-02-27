@@ -30,6 +30,7 @@ import Alert from './AlertMessage.vue';
         var headers = {};
         const token = document.cookie.replace(/(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/, '$1');
         this.$http.defaults.headers.common.Authorization = `${token}`;
+        console.log("@@@@@@@@######@@@",this.$http.defaults.headers.common.Authorization );
         // this.$http.defaults.headers= headers;
     }
         

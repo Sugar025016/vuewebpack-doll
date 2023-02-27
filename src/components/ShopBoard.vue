@@ -2,7 +2,7 @@
   <div>
     <navbar v-on:childByValue="childByValue" ref="navbar"></navbar>
     <alert></alert>
-    <main role="main">
+    <main role="main" >
       <shopSection  :userData="user"></shopSection>
       <router-view :userData="user"></router-view>
     </main>

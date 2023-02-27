@@ -1,15 +1,15 @@
 <template>
-  <div>
+  <div style="margin:  70px 0 0 0;" >
     <section
         class="jumbotron text-center"
         style="
-          background-size: cover;
+          background-size:auto 100% ; 
           background-position: center;
           background-image: url('http://localhost:8082/16348130439051457.jpg');
         "
         :style="{ backgroundImage: `url(${imageUrl})` }"
       >
-        <div class="container">
+        <div class="container"> 
           <div class="row justify-content-center align-items-center">
             <div class="col-4">
               <h1 class="display-4 t-shadow">娃娃世界</h1>

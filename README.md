@@ -5,6 +5,15 @@
 ## Build Setup
 
 ``` bash
+# 使用下列語法取得目前遠端所有node版本
+nvm ls-remote
+
+# node 安裝
+nvm install v12.14.0
+
+# node 
+nvm use 12.14.0
+
 # install dependencies
 npm install
 

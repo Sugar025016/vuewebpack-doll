@@ -174,7 +174,9 @@
             </button>
           </div>
           <div class="modal-body">
-            <img :src="product.imageUrl" class="img-fluid" alt="" />
+            <div class="div_product_img">
+              <img :src="url+product.imageUrl" class="img-fluid product_img" alt="" />
+            </div>
             <blockquote class="blockquote mt-3">
               <p class="mb-0">{{ product.content }}</p>
               <footer class="blockquote-footer text-right">
@@ -229,6 +231,7 @@ export default {
   },
   data() {
     return {
+      url : `${process.env.imgUrl}`,
       message: "",
       code: 0,
       user: {},
@@ -295,7 +298,7 @@ export default {
         console.log("products:response", response.data);
           $("#productModal").modal("hide");
         if (response.data.success) {
-        console.log(" vm.$parent.updateItme()");
+          console.log(" vm.$parent.updateItme()");
           // this.$emit('refreshbizlines');
           vm.$parent.updateItme()
 
@@ -333,6 +336,22 @@ export default {
   .bd-placeholder-img-lg {
     font-size: 3.5rem;
   }
+}
+
+.div_product_img{
+  display: flex;
+  /* 水平置中 */
+  justify-content: center;    
+  /* 垂直置中 */
+  align-content: center;      
+  flex-wrap: wrap;
+  height: 400px;
+}
+
+.product_img {
+  max-height: 400px;
+  height: 100%;
+  // width: 70%;
 }
 
 .img-set {
